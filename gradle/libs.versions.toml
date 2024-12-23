@@ -2,9 +2,9 @@
 android-gradle-plugin = "8.7.3"
 org-jetbrains-kotlin = "2.0.21"
 org-jetbrains-coroutines = "1.9.0"
-org-jetbrains-kotlinx-datetime = "0.6.0"
+org-jetbrains-kotlinx-datetime = "0.6.1"
 org-jetbrains-kotlinx-serialization-json = "1.7.3"
-org-gradle-android-cache-fix = "2.7.3"
+org-gradle-android-cache-fix = "3.0.1"
 com-google-ksp = "2.0.21-1.0.25"
 io-insert-koin = "4.0.0"
 io-mockk = "1.13.5"
@@ -13,7 +13,6 @@ androidx-test-ext = "1.2.1"
 androidx-test-runner = "1.6.2"
 androidx-lifecycle = "2.8.7"
 androidx-lifecycle-extensions = "2.2.0"
-androidx-lifecycle-runtime-ktx = "2.6.1"
 androidx-room = "2.6.1"
 androidx-datastore-preferences = "1.1.1"
 androix-core = "1.15.0"
@@ -21,10 +20,14 @@ androidx-navigation = "2.8.5"
 androidx-activity-compose = "1.9.3"
 androidx-compose-bom = "2024.12.01"
 jakewharton-timber = "5.0.1"
+slf4j-android = "1.7.36"
 junit = "4.13.2"
 espresso-core = "3.6.1"
 ktor-client = "3.0.0"
 coil-compose = "2.7.0"
+junit-version = "1.2.1"
+appcompat = "1.7.0"
+material = "1.12.0"
 
 [libraries]
 gradle-plugin-android = { module = "com.android.tools.build:gradle", version.ref = "android-gradle-plugin" }
@@ -78,6 +81,7 @@ io-insert-koin-test = { module = "io.insert-koin:koin-test", version.ref = "io-i
 io-insert-koin-test-junit4 = { module = "io.insert-koin:koin-test-junit4", version.ref = "io-insert-koin" }
 
 jakewharton-timber = { module = "com.jakewharton.timber:timber", version.ref = "jakewharton-timber" }
+org-slf4j-android = { module = "org.slf4j:slf4j-android", version.ref = "slf4j-android" }
 
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor-client" }
 ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor-client" }
@@ -96,6 +100,9 @@ androidx-test-core = { module = "androidx.test:core", version.ref = "androidx-te
 androidx-test-ext-junit-ktx = { module = "androidx.test.ext:junit-ktx", version.ref = "androidx-test-ext" }
 androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidx-test-runner" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit-version" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin" }
@@ -106,3 +113,15 @@ jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serializati
 com-google-ksp = { id = "com.google.devtools.ksp", version.ref = "com-google-ksp" }
 org-gradle-android-cache-fix = { id = "org.gradle.android.cache-fix", version.ref = "org-gradle-android-cache-fix" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "org-jetbrains-kotlin" }
+
+# Plugins defined by this project
+angryl1on-vetclinic-android-application = { id = "angryl1on.vetclinic.android.application", version = "unspecified" }
+angryl1on-vetclinic-android-application-compose = { id = "angryl1on.vetclinic.android.application.compose", version = "unspecified" }
+angryl1on-vetclinic-android-library = { id = "angryl1on.vetclinic.android.library", version = "unspecified" }
+angryl1on-vetclinic-android-library-compose = { id = "angryl1on.vetclinic.android.library.compose", version = "unspecified" }
+angryl1on-vetclinic-android-library-flavored = { id = "angryl1on.vetclinic.android.library.flavored", version = "unspecified" }
+angryl1on-vetclinic-android-ktor = { id = "angryl1on.vetclinic.android.ktor", version = "unspecified" }
+angryl1on-vetclinic-android-koin = { id = "angryl1on.vetclinic.android.koin", version = "unspecified" }
+angryl1on-vetclinic-android-room = { id = "angryl1on.vetclinic.android.room", version = "unspecified" }
+
+[bundles]

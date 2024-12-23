@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google {
             content {
@@ -21,3 +22,12 @@ dependencyResolutionManagement {
 
 rootProject.name = "VetClinic"
 include(":app")
+include(":core:common")
+include(":core:data")
+include(":core:database")
+include(":core:model")
+include(":core:domain")
+include(":core:network")
+include(":core:reporting")
+include(":core:testing")
+include(":core:ui")
