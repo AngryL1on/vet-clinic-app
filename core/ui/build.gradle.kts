@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "ru.angryl1on.vetclinic.ui"
+    namespace = "dev.angryl1on.vetclinic.ui"
 
 }
 

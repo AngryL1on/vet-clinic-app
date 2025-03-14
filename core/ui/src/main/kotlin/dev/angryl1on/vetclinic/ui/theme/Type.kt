@@ -7,7 +7,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import ru.angryl1on.vetclinic.ui.R
+import dev.angryl1on.vetclinic.ui.R
 
 val Typography = Typography(
     bodyLarge = TextStyle(
