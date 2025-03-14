@@ -1,24 +1,34 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.jetbrains.kotlin.serialization)
-    alias(libs.plugins.com.google.ksp)
-    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.angryl1on.vetclinic.android.application)
+    alias(libs.plugins.angryl1on.vetclinic.android.application.compose)
+    alias(libs.plugins.angryl1on.vetclinic.android.koin)
 }
 
 android {
     namespace = "dev.angryl1on.vetclinic"
-    compileSdk = 35
+    compileSdk = libs.versions.compile.sdk.get().toInt()
 
     defaultConfig {
         applicationId = "dev.angryl1on.vetclinic"
-        minSdk = 24
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = libs.versions.version.code.get().toInt()
+        versionName = libs.versions.version.name.get()
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
+    }
+
+    flavorDimensions += "environment"
+    productFlavors {
+        create("dev") {
+            dimension = "environment"
+            versionNameSuffix = "-dev"
+        }
+
+        create("preprod") {
+            dimension = "environment"
+            versionNameSuffix = "-preprod"
+        }
+
+        create("prod") {
+            dimension = "environment"
         }
     }
 
@@ -34,19 +44,6 @@ android {
         }
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-
-    buildFeatures {
-        compose = true
-    }
-
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -60,27 +57,25 @@ dependencies {
      * Core dependencies
      */
     implementation(libs.androidx.core.ktx)
-    implementation(libs.jakewharton.timber)
 
     /**
-     * Compose dependencies
+     *  Module dependencies
      */
-    implementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-
-    implementation(libs.androidx.compose.ui)
-    implementation(libs.androidx.compose.ui.tooling)
-    implementation(libs.androidx.compose.ui.tooling.preview)
-    implementation(libs.androidx.compose.ui.util)
-    implementation(libs.androidx.compose.activity)
-    implementation(libs.androidx.compose.foundation.layout)
-    implementation(libs.androidx.compose.material3)
+    implementation(project(":core:common"))
+    implementation(project(":core:data"))
+    implementation(project(":core:database"))
+    implementation(project(":core:domain"))
+    implementation(project(":core:model"))
+    implementation(project(":core:network"))
+    implementation(project(":core:reporting"))
+    implementation(project(":core:ui"))
+    implementation(project(":feature:ui-main"))
+    implementation(project(":feature:ui-appointment"))
+    implementation(project(":feature:ui-history"))
+    implementation(project(":feature:ui-profile"))
 
     /**
-     * Testing dependencies
+     * Navigation dependencies
      */
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.junit)
-    testImplementation(libs.androidx.test.ext.junit.ktx)
-    androidTestImplementation(libs.androidx.test.ext.junit.ktx)
+    implementation(libs.androidx.navigation.compose)
 }

@@ -7,4 +7,5 @@ plugins {
     alias(libs.plugins.org.gradle.android.cache.fix) apply false
     alias(libs.plugins.com.google.ksp) apply false
     alias(libs.plugins.compose.compiler) apply false
+    alias(libs.plugins.androidx.navigation.safeargs) apply false
 }

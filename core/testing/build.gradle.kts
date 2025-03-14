@@ -6,22 +6,23 @@ plugins {
 android {
     namespace = "dev.angryl1on.vetclinic.testing"
 
-    packaging {
-        resources {
-            excludes += setOf(
-                "META-INF/LICENSE.md",
-                "META-INF/LICENSE",
-                "META-INF/NOTICE",
-                "META-INF/LICENSE-notice.md",
-                "META-INF/DEPENDENCIES",
-                "META-INF/NOTICE.txt",
-                "META-INF/LICENSE.txt"
-            )
-        }
-    }
+//    packaging {
+//        resources {
+//            excludes += setOf(
+//                "META-INF/LICENSE.md",
+//                "META-INF/LICENSE",
+//                "META-INF/NOTICE",
+//                "META-INF/LICENSE-notice.md",
+//                "META-INF/DEPENDENCIES",
+//                "META-INF/NOTICE.txt",
+//                "META-INF/LICENSE.txt"
+//            )
+//        }
+//    }
 }
 
 dependencies {
+
     /**
      * Common testing dependencies
      */
