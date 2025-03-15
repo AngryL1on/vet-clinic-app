@@ -46,6 +46,7 @@ data class Dimensions(
     /**
      * Other dimensions
      */
+    val circularStrokeWith: Dp = 3.5.dp,
 )
 
 val LocalDimensions = compositionLocalOf { Dimensions() }
