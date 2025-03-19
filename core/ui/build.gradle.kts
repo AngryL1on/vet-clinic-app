@@ -15,6 +15,11 @@ dependencies {
     implementation(libs.androidx.core.ktx)
 
     /**
+     * Navigation dependencies
+     */
+    implementation(libs.androidx.navigation.compose)
+
+    /**
      *  Module dependencies
      */
     implementation(project(":core:domain"))

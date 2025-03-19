@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="limit_of_max_char">%1$d / %2$d</string>
+
+    <!--Navigation-->
+    <string name="home">Main</string>
+    <string name="recording">Recording</string>
+    <string name="history">History</string>
+    <string name="profile">Profile</string>
 </resources>
