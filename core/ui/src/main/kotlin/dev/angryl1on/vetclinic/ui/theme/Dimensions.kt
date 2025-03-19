@@ -48,6 +48,7 @@ data class Dimensions(
      */
     val circularStrokeWith: Dp = 3.5.dp,
     val defaultCornerRadius: Dp = 12.dp,
+    val iconDefaultSize: Dp = 24.dp,
 )
 
 val LocalDimensions = compositionLocalOf { Dimensions() }
