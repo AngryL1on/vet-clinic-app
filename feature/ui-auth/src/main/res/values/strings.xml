@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Auth</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="welcome">Добро пожаловать</string>
+    <string name="enter_email">Введите электронную почту</string>
+    <string name="enter_password">Введите пароль</string>
+</resources>
