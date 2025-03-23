@@ -13,6 +13,7 @@ dependencies {
      * Core dependencies
      */
     implementation(libs.androidx.core.ktx)
+    implementation(libs.kotlinx.datetime)
 
     /**
      * Navigation dependencies

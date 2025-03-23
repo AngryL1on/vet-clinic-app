@@ -128,7 +128,6 @@ angryl1on-vetclinic-android-application = { id = "angryl1on.vetclinic.android.ap
 angryl1on-vetclinic-android-application-compose = { id = "angryl1on.vetclinic.android.application.compose", version = "unspecified" }
 angryl1on-vetclinic-android-library = { id = "angryl1on.vetclinic.android.library", version = "unspecified" }
 angryl1on-vetclinic-android-library-compose = { id = "angryl1on.vetclinic.android.library.compose", version = "unspecified" }
-angryl1on-vetclinic-android-library-flavored = { id = "angryl1on.vetclinic.android.library.flavored", version = "unspecified" }
 angryl1on-vetclinic-android-ktor = { id = "angryl1on.vetclinic.android.ktor", version = "unspecified" }
 angryl1on-vetclinic-android-koin = { id = "angryl1on.vetclinic.android.koin", version = "unspecified" }
 angryl1on-vetclinic-android-room = { id = "angryl1on.vetclinic.android.room", version = "unspecified" }

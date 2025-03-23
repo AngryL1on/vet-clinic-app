@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.angryl1on.vetclinic.android.library.flavored)
+    alias(libs.plugins.angryl1on.vetclinic.android.library)
     alias(libs.plugins.angryl1on.vetclinic.android.ktor)
     alias(libs.plugins.angryl1on.vetclinic.android.koin)
 }
@@ -7,36 +7,8 @@ plugins {
 android {
     namespace = "dev.angryl1on.vetclinic.network"
 
-    productFlavors {
-        getByName("dev") {
-            dimension = "environment"
-            buildConfigField(
-                "String",
-                "WEB_PORTAL_HOST",
-                // TODO: Change URL
-                "\"dev.localhost.ru\""
-            )
-        }
-
-        getByName("preprod") {
-            dimension = "environment"
-            buildConfigField(
-                "String",
-                "WEB_PORTAL_HOST",
-                // TODO: Change URL
-                "\"preprod.localhost.ru\""
-            )
-        }
-
-        getByName("prod") {
-            dimension = "environment"
-            buildConfigField(
-                "String",
-                "WEB_PORTAL_HOST",
-                // TODO: Change URL
-                "\"localhost.ru\""
-            )
-        }
+    defaultConfig {
+        buildConfigField("String", "WEB_HOST", "\"http://http://45.139.78.153:8080/api\"")
     }
 
     buildFeatures {

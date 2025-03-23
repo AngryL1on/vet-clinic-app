@@ -1,5 +1,4 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     `kotlin-dsl`
@@ -39,11 +38,6 @@ gradlePlugin {
         register("androidLibrary") {
             id = "angryl1on.vetclinic.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
-        }
-
-        register("androidFlavoredLibrary") {
-            id = "angryl1on.vetclinic.android.library.flavored"
-            implementationClass = "AndroidFlavoredLibraryConventionPlugin"
         }
 
         register("androidLibraryCompose") {
