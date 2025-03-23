@@ -50,6 +50,7 @@ data class Dimensions(
     val defaultCornerRadius: Dp = 12.dp,
     val iconDefaultSize: Dp = 24.dp,
     val iconButtonDefaultSize: Dp = 40.dp,
+    val logoSize: Dp = 96.dp,
 )
 
 val LocalDimensions = compositionLocalOf { Dimensions() }
