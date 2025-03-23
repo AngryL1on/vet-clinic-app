@@ -7,4 +7,6 @@
     <string name="recording">Recording</string>
     <string name="history">History</string>
     <string name="profile">Profile</string>
+    <string name="with_return">С возвращением!</string>
+    <string name="my_pets">My pets</string>
 </resources>
