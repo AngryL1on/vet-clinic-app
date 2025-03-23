@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.angryl1on.vetclinic.android.library)
+    alias(libs.plugins.jetbrains.kotlin.serialization)
 }
 
 android {
@@ -18,4 +19,6 @@ dependencies {
      * Coroutines dependencies
      */
     implementation(libs.kotlinx.coroutines.android)
+
+    implementation(libs.kotlinx.serialization.json)
 }

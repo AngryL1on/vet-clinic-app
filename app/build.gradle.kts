@@ -15,23 +15,6 @@ android {
 
     }
 
-    flavorDimensions += "environment"
-    productFlavors {
-        create("dev") {
-            dimension = "environment"
-            versionNameSuffix = "-dev"
-        }
-
-        create("preprod") {
-            dimension = "environment"
-            versionNameSuffix = "-preprod"
-        }
-
-        create("prod") {
-            dimension = "environment"
-        }
-    }
-
     buildTypes {
         release {
             isMinifyEnabled = true
@@ -69,6 +52,7 @@ dependencies {
     implementation(project(":core:network"))
     implementation(project(":core:reporting"))
     implementation(project(":core:ui"))
+    implementation(project(":feature:ui-auth"))
     implementation(project(":feature:ui-main"))
     implementation(project(":feature:ui-appointment"))
     implementation(project(":feature:ui-history"))

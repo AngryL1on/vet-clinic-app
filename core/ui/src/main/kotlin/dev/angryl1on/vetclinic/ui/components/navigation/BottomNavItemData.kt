@@ -10,12 +10,10 @@ import androidx.compose.runtime.Stable
  *
  * @property [icon] Идентификатор ресурса значка, представляющего иконку для элемента навигации.
  * @property [title] Идентификатор строкового ресурса, представляющий заголовок или описание для элемента навигации.
- * @property [screen] Экран для переключения.
  */
 @Stable
 @SuppressLint("SupportAnnotationUsage")
 data class BottomNavItemData(
     @DrawableRes val icon : Int,
     @StringRes val title: String,
-    val screen: String
 )

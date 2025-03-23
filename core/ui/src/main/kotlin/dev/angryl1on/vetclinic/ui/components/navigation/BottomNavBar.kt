@@ -8,16 +8,19 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
+import dev.angryl1on.vetclinic.ui.theme.Black
 import dev.angryl1on.vetclinic.ui.theme.LocalDimensions
 import dev.angryl1on.vetclinic.ui.theme.MediumRoboto12
 import dev.angryl1on.vetclinic.ui.theme.NavActive
@@ -34,6 +37,7 @@ fun BottomNavBar(
 ) {
     val dimensions = LocalDimensions.current
     val iconSize = Modifier.size(dimensions.iconDefaultSize)
+
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
@@ -49,11 +53,27 @@ fun BottomNavBar(
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            navItems.forEach { item ->
-                val isSelected = currentRoute == item.screen
+            navItems.forEachIndexed { index, item ->
+                // Сопоставляем индекс с маршрутом
+                val route = when (index) {
+                    0 -> "dev.angryl1on.vetclinic.domain.navigation.Route.MainScreen"
+                    1 -> "dev.angryl1on.vetclinic.domain.navigation.Route.AppointmentScreen"
+                    2 -> "dev.angryl1on.vetclinic.domain.navigation.Route.HistoryScreen"
+                    3 -> "dev.angryl1on.vetclinic.domain.navigation.Route.ProfileScreen"
+                    else -> ""
+                }
+
+                val isSelected = (currentRoute == route)
 
                 NavigationBarItem(
                     selected = isSelected,
+                    colors = NavigationBarItemDefaults.colors (
+                        indicatorColor = NavActive,
+                        selectedIconColor = Black,
+                        selectedTextColor = Black,
+                        unselectedIconColor = Color.Black,
+                        unselectedTextColor = Color.Black
+                    ),
                     icon = {
                         Icon(
                             imageVector = ImageVector.vectorResource(item.icon),
@@ -70,12 +90,9 @@ fun BottomNavBar(
                     onClick = {
                         scope.launch {
                             if (!isSelected) {
-                                navController.navigate(item.screen) {
-                                    // Позволяет избежать дублирования экранов,
-                                    // когда мы снова нажимаем ту же вкладку
+                                navController.navigate(route) {
                                     launchSingleTop = true
                                     restoreState = true
-
                                     popUpTo(navController.graph.findStartDestination().id) {
                                         saveState = true
                                     }
