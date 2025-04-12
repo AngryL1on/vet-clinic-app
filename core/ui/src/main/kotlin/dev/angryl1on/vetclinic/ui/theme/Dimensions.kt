@@ -47,6 +47,7 @@ data class Dimensions(
      * Other dimensions
      */
     val circularStrokeWith: Dp = 3.5.dp,
+    val linearProgressIndicatorHeight: Dp = 4.dp,
     val defaultCornerRadius: Dp = 12.dp,
     val iconDefaultSize: Dp = 24.dp,
     val iconButtonDefaultSize: Dp = 40.dp,

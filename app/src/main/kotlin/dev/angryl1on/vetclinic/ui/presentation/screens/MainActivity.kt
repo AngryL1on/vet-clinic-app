@@ -24,6 +24,7 @@ import dev.angryl1on.history.presentation.screens.HistoryScreen
 import dev.angryl1on.main.presentation.screens.MainScreen
 import dev.angryl1on.profile.presentation.screens.ProfileScreen
 import dev.angryl1on.vetclinic.auth.presentation.screens.LoginScreen
+import dev.angryl1on.vetclinic.auth.presentation.screens.RegistrationFlowScreen
 import dev.angryl1on.vetclinic.auth.presentation.screens.SplashScreen
 import dev.angryl1on.vetclinic.auth.presentation.screens.StartScreen
 import dev.angryl1on.vetclinic.domain.navigation.Route
@@ -56,6 +57,7 @@ class MainActivity : ComponentActivity() {
                     bottomBar = {
                         if (currentRoute != "dev.angryl1on.vetclinic.domain.navigation.Route.SplashScreen" &&
                             currentRoute != "dev.angryl1on.vetclinic.domain.navigation.Route.LoginScreen" &&
+                            currentRoute != "dev.angryl1on.vetclinic.domain.navigation.Route.RegistrationFlowScreen" &&
                             currentRoute != "dev.angryl1on.vetclinic.domain.navigation.Route.StartScreen"
                         ) {
                             BottomNavBar(
@@ -80,12 +82,11 @@ class MainActivity : ComponentActivity() {
                                 }
                                 composable<Route.StartScreen> {
                                     StartScreen(
-                                        onLoginClick = {
-                                            navController.navigate(Route.LoginScreen)
-                                        },
-                                        onRegisterClick = { /* Действие для регистрации */ }
+                                        onLoginClick = { navController.navigate(Route.LoginScreen) },
+                                        onRegisterClick = { navController.navigate(Route.RegistrationFlowScreen) }
                                     )
                                 }
+                                composable<Route.RegistrationFlowScreen> { RegistrationFlowScreen() }
                                 composable<Route.LoginScreen> {
                                     LoginScreen(navController = navController)
                                 }

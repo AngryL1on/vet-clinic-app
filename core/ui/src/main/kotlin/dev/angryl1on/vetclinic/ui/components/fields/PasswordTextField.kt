@@ -27,6 +27,7 @@ import dev.angryl1on.vetclinic.ui.theme.White
 fun PasswordTextField(
     modifier: Modifier = Modifier,
     value: String = "",
+    title: String? = null,
     placeholderText: String? = null,
     errorText: String? = null,
     maxCharCount: Int? = null,
@@ -54,6 +55,7 @@ fun PasswordTextField(
         } else {
             PasswordVisualTransformation()
         },
+        title = title,
         placeholder = placeholderText,
         isEnabled = isEnabled,
         isError = isError,
