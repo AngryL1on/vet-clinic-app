@@ -79,8 +79,8 @@ fun OutlinePrimaryButton(
                     imageVector = ImageVector.vectorResource(id = icon),
                     contentDescription = null
                 )
+                Spacer(modifier = spacerModifier)
             }
-            Spacer(modifier = spacerModifier)
             Text(
                 text = text,
                 style = MediumRoboto14
