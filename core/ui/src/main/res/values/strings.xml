@@ -11,4 +11,7 @@
 
     <string name="with_return">С возвращением!</string>
     <string name="my_pets">My pets</string>
+    <string name="pick_date">Выберите дату</string>
+    <string name="cancel">Отменить</string>
+    <string name="confirm">Подтвердить</string>
 </resources>

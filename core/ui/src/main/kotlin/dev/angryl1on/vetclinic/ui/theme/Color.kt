@@ -17,6 +17,7 @@ val White = Color(0xFFFFFFFF)
 
 val ActiveButton = Color(0xFF039BE5)
 val Inputs = Color(0xFFE1F5FE)
+val InputsUnfocusedBorder = Color(0xFF42BAE8)
 val InputsText = Color(0xFF545454)
 val Cards = Color(0xFFE3F2FD)
 val NavActive = Color(0xFFB3E5FC)

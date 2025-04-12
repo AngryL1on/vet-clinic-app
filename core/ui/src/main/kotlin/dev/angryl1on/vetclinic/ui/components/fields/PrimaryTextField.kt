@@ -20,11 +20,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -83,8 +79,6 @@ fun PrimaryTextField(
         keyboardOptions
     }
 
-    var textValue by rememberSaveable { mutableStateOf(value) }
-
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(dimensions.verticalXXSmall)
@@ -99,11 +93,10 @@ fun PrimaryTextField(
         }
         BasicTextField(
             modifier = fillMaxWidthModifier,
-            value = textValue,
+            value = value,
             onValueChange = { text ->
                 val maxChars = maxQuantityOfChar ?: Int.MAX_VALUE
                 if (text.length <= maxChars) {
-                    textValue = text
                     onTextChange(text)
                 }
             },
@@ -144,7 +137,7 @@ fun PrimaryTextField(
                             .weight(5f)
                             .padding(end = dimensions.horizontalXSmall)
                     ) {
-                        if (textValue.isEmpty()) {
+                        if (value.isEmpty()) {
                             placeholder?.let { placeholderText ->
                                 Text(
                                     text = placeholderText,
@@ -200,7 +193,7 @@ fun PrimaryTextField(
                         modifier = fillMaxWidthModifier,
                         text = stringResource(
                             id = R.string.limit_of_max_char,
-                            textValue.length,
+                            value.length,
                             maxQuantityOfChar
                         ),
                         style = MediumRoboto12,
