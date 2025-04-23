@@ -42,4 +42,6 @@ interface AuthenticationDataStore {
      * Метод, который сохраняет пользователя
      */
     suspend fun updateUser(user: AuthDataStore)
+
+    suspend fun clear()
 }

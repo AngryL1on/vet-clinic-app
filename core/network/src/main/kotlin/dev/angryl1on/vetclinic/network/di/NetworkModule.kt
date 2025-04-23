@@ -1,12 +1,16 @@
 package dev.angryl1on.vetclinic.network.di
 
 import dev.angryl1on.vetclinic.common.di.VcDispatchers
+import dev.angryl1on.vetclinic.domain.usecase.authservice.GetUserInfoUseCase
 import dev.angryl1on.vetclinic.domain.usecase.authservice.RefreshTokenUseCase
 import dev.angryl1on.vetclinic.domain.usecase.authservice.SignInUseCase
 import dev.angryl1on.vetclinic.network.authservice.AuthService
 import dev.angryl1on.vetclinic.network.authservice.KtorAuthService
+import dev.angryl1on.vetclinic.network.authservice.usecase.GetUserInfoUseCaseImpl
 import dev.angryl1on.vetclinic.network.authservice.usecase.RefreshTokenUseCaseImpl
 import dev.angryl1on.vetclinic.network.authservice.usecase.SignInUseCaseImpl
+import dev.angryl1on.vetclinic.network.tokenservice.TokenSupport
+import dev.angryl1on.vetclinic.network.tokenservice.TokenSupportImpl
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.okhttp.OkHttp
@@ -51,6 +55,13 @@ val provideNetworkModule = module {
         }
     }
 
+    single<TokenSupport> {
+        TokenSupportImpl(
+            userAuthDataStore = get(),
+            refreshTokenUseCase = get()
+        )
+    }
+
     single<AuthService> {
         KtorAuthService(
             client = get(),
@@ -66,5 +77,12 @@ val provideNetworkModule = module {
 
     single<RefreshTokenUseCase> {
         RefreshTokenUseCaseImpl(authService = get())
+    }
+
+    single<GetUserInfoUseCase> {
+        GetUserInfoUseCaseImpl(
+            authService = get(),
+            tokenSupport = get()
+        )
     }
 }

@@ -27,18 +27,20 @@ import dev.angryl1on.vetclinic.auth.presentation.screens.LoginScreen
 import dev.angryl1on.vetclinic.auth.presentation.screens.RegistrationFlowScreen
 import dev.angryl1on.vetclinic.auth.presentation.screens.SplashScreen
 import dev.angryl1on.vetclinic.auth.presentation.screens.StartScreen
+import dev.angryl1on.vetclinic.data.auth.AuthenticationDataStore
 import dev.angryl1on.vetclinic.domain.navigation.Route
 import dev.angryl1on.vetclinic.ui.components.navigation.BottomNavBar
 import dev.angryl1on.vetclinic.ui.components.navigation.BottomNavItemData
 import dev.angryl1on.vetclinic.ui.provider.LocalSnackbarHostState
 import dev.angryl1on.vetclinic.ui.theme.VetClinicTheme
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
 
     private val bottomNavItems: List<BottomNavItemData> by inject()
-
+    private val authDataStore: AuthenticationDataStore by inject()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -100,7 +102,14 @@ class MainActivity : ComponentActivity() {
                                     HistoryScreen()
                                 }
                                 composable<Route.ProfileScreen> {
-                                    ProfileScreen()
+                                    ProfileScreen(
+                                        onLogoutClick = {
+                                            navController.navigate(Route.StartScreen)
+                                            coroutineScope.launch {
+                                                authDataStore.clear()
+                                            }
+                                        }
+                                    )
                                 }
                             }
                         }

@@ -69,6 +69,12 @@ class AuthenticationDataStoreImpl(
         }
     }
 
+    override suspend fun clear() {
+        dataStore.edit { preferences ->
+            preferences.clear() // Очищаем все данные
+        }
+    }
+
     companion object {
         val USER_ID = longPreferencesKey("id")
         val ACCESS_TOKEN = stringPreferencesKey("accessToken")
