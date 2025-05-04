@@ -2,6 +2,7 @@ package dev.angryl1on.vetclinic.ui.components.pickers
 
 import android.icu.text.SimpleDateFormat
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerColors
@@ -33,6 +34,7 @@ import dev.angryl1on.vetclinic.ui.theme.InputsUnfocusedBorder
 import dev.angryl1on.vetclinic.ui.theme.Red
 import dev.angryl1on.vetclinic.ui.theme.VetClinicTheme
 import dev.angryl1on.vetclinic.ui.theme.White
+import timber.log.Timber
 import java.util.Date
 import java.util.Locale
 
@@ -119,6 +121,8 @@ fun DatePickerModalInput(
 @Composable
 fun DatePickerTextField(
     modifier: Modifier = Modifier,
+    isError: Boolean = false,
+    errorText: String? = null,
     title: String? = null,
     initialDate: Long? = null,
     onDateSelected: (Long?) -> Unit
@@ -131,13 +135,20 @@ fun DatePickerTextField(
 
     // Инпут для отображения выбранной даты
     PrimaryTextField(
-        modifier = modifier.clickable { isDatePickerVisible = true },
+        modifier = modifier.clickable(
+            interactionSource = remember { MutableInteractionSource() },
+            indication = null
+        ) {
+            isDatePickerVisible = true
+        },
         title = title,
         value = formattedDate,
         placeholder = stringResource(R.string.pick_date),
+        isError = isError,
+        errorText = errorText,
         readOnly = true,
         isEnabled = true,
-        onTextChange = {},
+        onTextChange = { },
         trailingIcon = R.drawable.ic_date_pick,
         onTrailingIconClicked = { isDatePickerVisible = true }
     )
@@ -166,7 +177,7 @@ fun DatePickerModalInput() {
                 initialDate = null,
                 onDateSelected = { selectedMillis ->
                     // Здесь можно залогировать или обработать выбор даты в превью
-                    println("Selected date millis: $selectedMillis")
+                    Timber.d("Selected date millis: $selectedMillis")
                 }
             )
         }

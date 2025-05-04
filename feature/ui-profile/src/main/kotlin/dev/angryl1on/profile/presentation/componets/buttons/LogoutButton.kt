@@ -1,4 +1,4 @@
-package dev.angryl1on.profile.presentation.componets.button
+package dev.angryl1on.profile.presentation.componets.buttons
 
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -28,7 +28,7 @@ fun LogoutButton(
     text: String,
     onButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
-    isLoading: Boolean = false,
+    isLoading: Boolean = false
 ) {
     val dimensions = LocalDimensions.current
 
