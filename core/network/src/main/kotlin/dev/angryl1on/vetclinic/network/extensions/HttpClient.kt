@@ -84,10 +84,8 @@ internal suspend inline fun HttpResponse.parseErrors(): ErrorResponse {
         Json.decodeFromString<ErrorResponse>(bodyText)
     } catch (e: Exception) {
         ErrorResponse(
-            status = this.status.value,
-            error = "ParsingError",
+            statusCode = this.status.value,
             message = bodyText.ifBlank { "Неизвестная ошибка" }
         )
     }
 }
-
