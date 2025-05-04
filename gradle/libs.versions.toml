@@ -15,10 +15,10 @@ androidx-lifecycle = "2.8.7"
 androidx-lifecycle-extensions = "2.2.0"
 androidx-lifecycle-runtime-ktx = "2.8.7"
 androidx-datastore-preferences = "1.1.4"
-androidx-room = "2.7.0"
+androidx-room = "2.7.1"
 androix-core = "1.16.0"
 androidx-activity-compose = "1.10.1"
-androidx-compose-bom = "2025.04.00"
+androidx-compose-bom = "2025.04.01"
 androidx-navigation = "2.8.9"
 jakewharton-timber = "5.0.1"
 junit = "4.13.2"
@@ -79,6 +79,7 @@ androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "androidx-datastore-preferences" }
 
 androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "androidx-navigation" }
+androidx-navigation-runtime-ktx = { module = "androidx.navigation:navigation-runtime-ktx", version.ref = "androidx-navigation" }
 androidx-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "androidx-navigation" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "androidx-navigation" }
 
@@ -121,7 +122,7 @@ jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serializati
 com-google-ksp = { id = "com.google.devtools.ksp", version.ref = "com-google-ksp" }
 org-gradle-android-cache-fix = { id = "org.gradle.android.cache-fix", version.ref = "org-gradle-android-cache-fix" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "org-jetbrains-kotlin" }
-#androidx-navigation-safeargs = { id = "androidx.navigation.safeargs", version.ref = "androidx-navigation" }
+androidx-navigation-safeargs = { id = "androidx.navigation.safeargs", version.ref = "androidx-navigation" }
 
 # Plugins defined by this project
 angryl1on-vetclinic-android-application = { id = "angryl1on.vetclinic.android.application", version = "unspecified" }

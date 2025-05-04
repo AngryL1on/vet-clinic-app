@@ -8,7 +8,7 @@ android {
     namespace = "dev.angryl1on.vetclinic.network"
 
     defaultConfig {
-        buildConfigField("String", "WEB_HOST", "\"192.168.0.203\"")
+        buildConfigField("String", "WEB_HOST", "\"192.168.3.68\"")
     }
 
     buildFeatures {
@@ -27,6 +27,7 @@ dependencies {
      */
     implementation(project(":core:common"))
     implementation(project(":core:data"))
+    implementation(project(":core:database"))
     implementation(project(":core:domain"))
     implementation(project(":core:model"))
     testImplementation(project(":core:testing"))

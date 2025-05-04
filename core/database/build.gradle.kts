@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.angryl1on.vetclinic.android.library)
+    alias(libs.plugins.angryl1on.vetclinic.android.koin)
     alias(libs.plugins.angryl1on.vetclinic.android.room)
 }
 

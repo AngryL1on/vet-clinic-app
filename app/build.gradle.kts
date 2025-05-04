@@ -62,4 +62,5 @@ dependencies {
      * Navigation dependencies
      */
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.navigation.runtime.ktx)
 }

@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.angryl1on.vetclinic.android.library)
     alias(libs.plugins.jetbrains.kotlin.serialization)
+    id("kotlin-parcelize")
 }
 
 android {
