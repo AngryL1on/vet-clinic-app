@@ -12,9 +12,14 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,7 +39,7 @@ import dev.angryl1on.vetclinic.ui.theme.White
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("SupportAnnotationUsage")
 fun ToolBar(
-    @DrawableRes iconRight: Int,
+    @DrawableRes iconRight: Int?,
     modifier: Modifier = Modifier,
     lastName: String? = null,
     firstName: String? = null,
@@ -68,7 +73,7 @@ fun ToolBar(
                     horizontalArrangement = Arrangement.spacedBy(dimensions.horizontalSmall)
                 ) {
                     ToolBarAvatar(
-                        modifier = Modifier.fillMaxHeight(),
+                        modifier = Modifier.size(dimensions.iconButtonDefaultSize),
                         avatarURL = imageAvatar,
                         firstName = firstName,
                         lastName = lastName,
@@ -82,14 +87,16 @@ fun ToolBar(
                 }
             },
             actions = {
-                ToolBarButton(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .size(dimensions.iconButtonDefaultSize)
-                        .aspectRatio(1f),
-                    icon = iconRight,
-                    onClick = onRightIconClick
-                )
+                iconRight?.let {
+                    ToolBarButton(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .size(dimensions.iconButtonDefaultSize)
+                            .aspectRatio(1f),
+                        icon = it,
+                        onClick = onRightIconClick
+                    )
+                }
             }
         )
     } else (
@@ -130,16 +137,37 @@ fun ToolBar(
                     }
                 },
                 actions = {
-                    ToolBarButton(
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .size(dimensions.iconButtonDefaultSize)
-                            .aspectRatio(1f),
-                        icon = iconRight,
-                        onClick = onRightIconClick
-                    )
+                    if (iconRight != null) {
+                        ToolBarButton(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .size(dimensions.iconButtonDefaultSize)
+                                .aspectRatio(1f),
+                            icon = iconRight,
+                            onClick = onRightIconClick
+                        )
+                    }
                 }
             )
+    )
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+fun TopBarLoading() {
+    TopAppBar(title = { Text("Загрузка...") })
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+fun TopBarError(onRetry: () -> Unit) {
+    TopAppBar(
+        title = { Text("Ошибка загрузки") },
+        actions = {
+            IconButton(onClick = onRetry) {
+                Icon(Icons.Default.Refresh, contentDescription = "Повторить")
+            }
+        }
     )
 }
 

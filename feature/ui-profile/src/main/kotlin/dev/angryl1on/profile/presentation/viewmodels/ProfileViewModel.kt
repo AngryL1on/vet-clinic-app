@@ -36,7 +36,7 @@ class ProfileViewModel(
     }
 
     private fun sendIntent(profileScreenIntent: ProfileScreenIntent) {
-        when(profileScreenIntent) {
+        when (profileScreenIntent) {
             is ProfileScreenIntent.Load -> {
                 viewModelScope.launch {
                     reducer.sendIntent(ProfileScreenIntent.Load)

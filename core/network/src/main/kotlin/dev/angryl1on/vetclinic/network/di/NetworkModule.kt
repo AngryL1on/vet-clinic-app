@@ -4,11 +4,24 @@ import dev.angryl1on.vetclinic.common.di.VcDispatchers
 import dev.angryl1on.vetclinic.domain.usecase.authservice.GetUserInfoUseCase
 import dev.angryl1on.vetclinic.domain.usecase.authservice.RefreshTokenUseCase
 import dev.angryl1on.vetclinic.domain.usecase.authservice.SignInUseCase
+import dev.angryl1on.vetclinic.domain.usecase.petservice.CreatePetUseCase
+import dev.angryl1on.vetclinic.domain.usecase.petservice.DeletePetUseCase
+import dev.angryl1on.vetclinic.domain.usecase.petservice.EditPetUseCase
+import dev.angryl1on.vetclinic.domain.usecase.petservice.GetAllPetsUseCase
+import dev.angryl1on.vetclinic.domain.usecase.petservice.ObservePetsUseCase
+import dev.angryl1on.vetclinic.domain.usecase.petservice.UploadPhotoUseCase
 import dev.angryl1on.vetclinic.network.authservice.AuthService
 import dev.angryl1on.vetclinic.network.authservice.KtorAuthService
 import dev.angryl1on.vetclinic.network.authservice.usecase.GetUserInfoUseCaseImpl
 import dev.angryl1on.vetclinic.network.authservice.usecase.RefreshTokenUseCaseImpl
 import dev.angryl1on.vetclinic.network.authservice.usecase.SignInUseCaseImpl
+import dev.angryl1on.vetclinic.network.petservice.KtorPetService
+import dev.angryl1on.vetclinic.network.petservice.PetService
+import dev.angryl1on.vetclinic.network.petservice.usecase.CreatePetUseCaseImpl
+import dev.angryl1on.vetclinic.network.petservice.usecase.DeletePetUseCaseImpl
+import dev.angryl1on.vetclinic.network.petservice.usecase.EditPetUseCaseImpl
+import dev.angryl1on.vetclinic.network.petservice.usecase.GetAllPetsUseCaseImpl
+import dev.angryl1on.vetclinic.network.petservice.usecase.UploadPhotoUseCaseImpl
 import dev.angryl1on.vetclinic.network.tokenservice.TokenSupport
 import dev.angryl1on.vetclinic.network.tokenservice.TokenSupportImpl
 import io.ktor.client.HttpClient
@@ -16,10 +29,10 @@ import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.logging.DEFAULT
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.plugins.logging.SIMPLE
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import org.koin.core.qualifier.named
@@ -28,7 +41,10 @@ import kotlin.time.Duration.Companion.seconds
 
 val provideNetworkModule = module {
     single(named("network")) {
-        Json { ignoreUnknownKeys = true }
+        Json {
+            ignoreUnknownKeys = true
+            isLenient = true
+        }
     }
 
     single {
@@ -49,8 +65,8 @@ val provideNetworkModule = module {
             }
 
             install(Logging) {
-                logger = Logger.DEFAULT
-                level = LogLevel.INFO
+                logger = Logger.SIMPLE
+                level = LogLevel.HEADERS
             }
         }
     }
@@ -71,6 +87,15 @@ val provideNetworkModule = module {
         )
     }
 
+    single<PetService> {
+        KtorPetService(
+            client = get(),
+            apiHost = get(named("API")),
+            dispatcher = get(named(VcDispatchers.IO.name)),
+            petDao = get()
+        )
+    }
+
     single<SignInUseCase> {
         SignInUseCaseImpl(authService = get())
     }
@@ -82,6 +107,43 @@ val provideNetworkModule = module {
     single<GetUserInfoUseCase> {
         GetUserInfoUseCaseImpl(
             authService = get(),
+            tokenSupport = get()
+        )
+    }
+
+    single<CreatePetUseCase> {
+        CreatePetUseCaseImpl(
+            petService = get(),
+            tokenSupport = get()
+        )
+    }
+
+    single<GetAllPetsUseCase> {
+        GetAllPetsUseCaseImpl(
+            petService = get(),
+            petDao = get(),
+            tokenSupport = get()
+        )
+    }
+
+    single<EditPetUseCase> {
+        EditPetUseCaseImpl(
+            petService = get(),
+            tokenSupport = get()
+        )
+    }
+
+    single<UploadPhotoUseCase> {
+        UploadPhotoUseCaseImpl(
+            petService = get(),
+            tokenSupport = get()
+        )
+    }
+
+    single<DeletePetUseCase> {
+        DeletePetUseCaseImpl(
+            petService = get(),
+            petDao = get(),
             tokenSupport = get()
         )
     }

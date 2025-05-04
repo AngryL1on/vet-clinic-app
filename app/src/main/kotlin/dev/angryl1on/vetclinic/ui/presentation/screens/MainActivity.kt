@@ -7,10 +7,13 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -22,46 +25,88 @@ import androidx.navigation.compose.rememberNavController
 import dev.angryl1on.appointment.presentation.screens.AppointmentScreen
 import dev.angryl1on.history.presentation.screens.HistoryScreen
 import dev.angryl1on.main.presentation.screens.MainScreen
+import dev.angryl1on.profile.presentation.screens.AddPetScreen
+import dev.angryl1on.profile.presentation.screens.EditPetScreen
+import dev.angryl1on.profile.presentation.screens.PetisiansManagementScreen
+import dev.angryl1on.profile.presentation.screens.ProfileManagmentScreen
 import dev.angryl1on.profile.presentation.screens.ProfileScreen
 import dev.angryl1on.vetclinic.auth.presentation.screens.LoginScreen
 import dev.angryl1on.vetclinic.auth.presentation.screens.RegistrationFlowScreen
 import dev.angryl1on.vetclinic.auth.presentation.screens.SplashScreen
 import dev.angryl1on.vetclinic.auth.presentation.screens.StartScreen
-import dev.angryl1on.vetclinic.data.auth.AuthenticationDataStore
 import dev.angryl1on.vetclinic.domain.navigation.Route
+import dev.angryl1on.vetclinic.model.pet.PetResponse
+import dev.angryl1on.vetclinic.ui.components.appbars.ToolBar
+import dev.angryl1on.vetclinic.ui.components.appbars.TopBarError
+import dev.angryl1on.vetclinic.ui.components.appbars.TopBarLoading
 import dev.angryl1on.vetclinic.ui.components.navigation.BottomNavBar
 import dev.angryl1on.vetclinic.ui.components.navigation.BottomNavItemData
+import dev.angryl1on.vetclinic.ui.presentation.viewmodel.MainActivityViewModel
+import dev.angryl1on.vetclinic.ui.presentation.viewmodel.UiScaffoldState
 import dev.angryl1on.vetclinic.ui.provider.LocalSnackbarHostState
 import dev.angryl1on.vetclinic.ui.theme.VetClinicTheme
-import kotlinx.coroutines.launch
+import dev.angryl1on.vetclinic.ui.theme.White
 import org.koin.android.ext.android.inject
 import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
 
     private val bottomNavItems: List<BottomNavItemData> by inject()
-    private val authDataStore: AuthenticationDataStore by inject()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
+
         setContent {
             VetClinicTheme {
                 val coroutineScope = rememberCoroutineScope()
                 val navController = rememberNavController()
                 val snackbarHostState = remember { SnackbarHostState() }
 
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                /**
+                 * ViewModel
+                 */
+                val viewModel: MainActivityViewModel = koinViewModel()
+                val scaffoldState by viewModel.scaffoldState.collectAsState()
+                val userInfo by viewModel.userState.collectAsState()
+
+                /**
+                 * Нав. стэк
+                 */
+                val navBackStackEntry = navController.currentBackStackEntryAsState().value
                 val currentRoute = navBackStackEntry?.destination?.route
+                val screenTitle = currentRoute?.prettyName()
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
+                    containerColor = White,
                     snackbarHost = { SnackbarHost(snackbarHostState) },
+                    topBar = {
+                        when (scaffoldState.appBarState) {
+                            UiScaffoldState.AppBarState.None -> Unit
+                            UiScaffoldState.AppBarState.Loading -> TopBarLoading()
+                            is UiScaffoldState.AppBarState.Error -> TopBarError { viewModel.retry() }
+                            is UiScaffoldState.AppBarState.Toolbar -> {
+                                val toolbar =
+                                    scaffoldState.appBarState as UiScaffoldState.AppBarState.Toolbar
+                                ToolBar(
+                                    modifier = Modifier.statusBarsPadding(),
+                                    isMainScreen = toolbar.isMainScreen,
+                                    iconLeft = toolbar.iconLeft,
+                                    iconRight = toolbar.iconRight,
+                                    imageAvatar = userInfo?.photoUrl,
+                                    screenName = toolbar.screenName ?: screenTitle,
+                                    firstName = userInfo?.firstName,
+                                    lastName = userInfo?.lastName,
+                                    onLeftIconClick = { if (toolbar.canNavigateBack) navController.popBackStack() },
+                                    onRightIconClick = toolbar.onRightIconClick(navController)
+                                )
+                            }
+                        }
+                    },
                     bottomBar = {
-                        if (currentRoute != "dev.angryl1on.vetclinic.domain.navigation.Route.SplashScreen" &&
-                            currentRoute != "dev.angryl1on.vetclinic.domain.navigation.Route.LoginScreen" &&
-                            currentRoute != "dev.angryl1on.vetclinic.domain.navigation.Route.RegistrationFlowScreen" &&
-                            currentRoute != "dev.angryl1on.vetclinic.domain.navigation.Route.StartScreen"
-                        ) {
+                        if (scaffoldState.showBottomBar) {
                             BottomNavBar(
                                 navController = navController,
                                 scope = coroutineScope,
@@ -71,16 +116,14 @@ class MainActivity : ComponentActivity() {
                     }
                 ) { innerPadding ->
                     CompositionLocalProvider(LocalSnackbarHostState provides snackbarHostState) {
-                        Box(modifier = Modifier.padding(innerPadding)) {
+                        Box(Modifier.padding(innerPadding)) {
+                            // ---------- Навигация ----------
                             NavHost(
                                 navController = navController,
                                 startDestination = Route.SplashScreen
                             ) {
                                 composable<Route.SplashScreen> {
-                                    SplashScreen(
-                                        navController = navController,
-                                        viewModel = koinViewModel()
-                                    )
+                                    SplashScreen(navController = navController)
                                 }
                                 composable<Route.StartScreen> {
                                     StartScreen(
@@ -89,33 +132,92 @@ class MainActivity : ComponentActivity() {
                                     )
                                 }
                                 composable<Route.RegistrationFlowScreen> { RegistrationFlowScreen() }
-                                composable<Route.LoginScreen> {
-                                    LoginScreen(navController = navController)
-                                }
-                                composable<Route.MainScreen> {
-                                    MainScreen()
-                                }
-                                composable<Route.AppointmentScreen> {
-                                    AppointmentScreen()
-                                }
-                                composable<Route.HistoryScreen> {
-                                    HistoryScreen()
-                                }
+                                composable<Route.LoginScreen> { LoginScreen(navController) }
+                                composable<Route.MainScreen> { MainScreen() }
+                                composable<Route.AppointmentScreen> { AppointmentScreen() }
+                                composable<Route.HistoryScreen> { HistoryScreen() }
                                 composable<Route.ProfileScreen> {
                                     ProfileScreen(
+                                        onPersonalDataClick = { navController.navigate(Route.ProfileManagmentScreen) },
+                                        onPetisiansManagementClick = { navController.navigate(Route.PetisiansManagementScreen) },
                                         onLogoutClick = {
-                                            navController.navigate(Route.StartScreen)
-                                            coroutineScope.launch {
-                                                authDataStore.clear()
-                                            }
+                                            viewModel.logout(
+                                                onComplete = {
+                                                    navController.navigate(Route.StartScreen) {
+                                                        popUpTo(Route.MainScreen) {
+                                                            inclusive = true
+                                                        }
+                                                    }
+                                                }
+                                            )
                                         }
+                                    )
+                                }
+                                composable<Route.ProfileManagmentScreen> { ProfileManagmentScreen() }
+                                composable<Route.PetisiansManagementScreen> {
+                                    PetisiansManagementScreen(
+                                        onEditClick = { pet ->
+                                            navController.navigate(Route.EditPetScreen.routeName)
+
+                                            navController
+                                                .getBackStackEntry(Route.EditPetScreen.routeName)
+                                                .savedStateHandle["pet"] = pet
+                                        }
+                                    )
+                                }
+                                composable<Route.AddPetScreen> {
+                                    AddPetScreen(
+                                        onBack = {
+                                            navController.popBackStack()
+                                        }
+                                    )
+                                }
+                                composable(Route.EditPetScreen.routeName) { backStackEntry ->
+                                    val pet = backStackEntry
+                                        .savedStateHandle
+                                        .get<PetResponse>("pet")
+                                        ?: error("Pet not found in SavedStateHandle")
+
+                                    EditPetScreen(
+                                        initialPet = pet,
+                                        onBack = { navController.popBackStack() }
                                     )
                                 }
                             }
                         }
                     }
                 }
+
+                /**
+                 * Обновление состояния UI для текущего маршрута
+                 * обновляем только при смене маршрута
+                 */
+                LaunchedEffect(
+                    currentRoute,
+                    navController.previousBackStackEntry,
+                    navBackStackEntry
+                ) {
+                    viewModel.updateForRoute {
+                        onRouteChanged(
+                            currentRoute = currentRoute
+                        )
+                    }
+                }
             }
         }
     }
 }
+
+/**
+ * Утилиты
+ */
+
+/** «Красивое» имя экрана из route‑строки (способ без хардкода длинных FQCN). */
+private fun String.prettyName(): String =
+    substringAfterLast('.')
+        .replace("([A-Z])".toRegex(), " $1")
+        .trim()
+
+/** Route#routeName понадобится, чтобы не повторять FQCN. */
+private val Route.routeName: String
+    get() = this::class.qualifiedName!!
