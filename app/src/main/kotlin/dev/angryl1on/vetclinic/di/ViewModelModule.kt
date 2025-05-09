@@ -8,7 +8,8 @@ val provideViewModelModule = module {
     viewModel {
         MainActivityViewModel(
             getCurrentUserUseCase = get(),
-            authDataStore = get()
+            authDataStore = get(),
+            database = get()
         )
     }
 }

@@ -18,10 +18,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import dev.angryl1on.appointment.presentation.screens.AppointmentScreen
 import dev.angryl1on.history.presentation.screens.HistoryScreen
 import dev.angryl1on.main.presentation.screens.MainScreen
@@ -31,9 +33,11 @@ import dev.angryl1on.profile.presentation.screens.PetisiansManagementScreen
 import dev.angryl1on.profile.presentation.screens.ProfileManagmentScreen
 import dev.angryl1on.profile.presentation.screens.ProfileScreen
 import dev.angryl1on.vetclinic.auth.presentation.screens.LoginScreen
-import dev.angryl1on.vetclinic.auth.presentation.screens.RegistrationFlowScreen
+import dev.angryl1on.vetclinic.common.navigation.*
+import dev.angryl1on.vetclinic.auth.presentation.screens.RegistrationScreen
 import dev.angryl1on.vetclinic.auth.presentation.screens.SplashScreen
 import dev.angryl1on.vetclinic.auth.presentation.screens.StartScreen
+import dev.angryl1on.vetclinic.auth.presentation.screens.VerifyScreen
 import dev.angryl1on.vetclinic.domain.navigation.Route
 import dev.angryl1on.vetclinic.model.pet.PetResponse
 import dev.angryl1on.vetclinic.ui.components.appbars.ToolBar
@@ -128,12 +132,31 @@ class MainActivity : ComponentActivity() {
                                 composable<Route.StartScreen> {
                                     StartScreen(
                                         onLoginClick = { navController.navigate(Route.LoginScreen) },
-                                        onRegisterClick = { navController.navigate(Route.RegistrationFlowScreen) }
+                                        onRegisterClick = { navController.navigate(Route.RegistrationScreen) }
                                     )
                                 }
-                                composable<Route.RegistrationFlowScreen> { RegistrationFlowScreen() }
+                                composable<Route.RegistrationScreen> {
+                                    RegistrationScreen(
+                                        navController = navController
+                                    )
+                                }
+                                composable(
+                                    route = "${Route.VerifyScreen.routeName}?email={email}&masked={masked}",
+                                    arguments = listOf(
+                                        navArgument("email") { type = NavType.StringType },
+                                        navArgument("masked") { type = NavType.StringType }
+                                    )
+                                ) {
+                                    VerifyScreen(navController = navController)
+                                }
                                 composable<Route.LoginScreen> { LoginScreen(navController) }
-                                composable<Route.MainScreen> { MainScreen() }
+                                composable<Route.MainScreen> {
+                                    MainScreen(
+                                        onAppointmentClick = {
+                                            navController.navigate(Route.AppointmentScreen)
+                                        }
+                                    )
+                                }
                                 composable<Route.AppointmentScreen> { AppointmentScreen() }
                                 composable<Route.HistoryScreen> { HistoryScreen() }
                                 composable<Route.ProfileScreen> {
@@ -207,17 +230,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-/**
- * Утилиты
- */
-
-/** «Красивое» имя экрана из route‑строки (способ без хардкода длинных FQCN). */
-private fun String.prettyName(): String =
-    substringAfterLast('.')
-        .replace("([A-Z])".toRegex(), " $1")
-        .trim()
-
-/** Route#routeName понадобится, чтобы не повторять FQCN. */
-private val Route.routeName: String
-    get() = this::class.qualifiedName!!

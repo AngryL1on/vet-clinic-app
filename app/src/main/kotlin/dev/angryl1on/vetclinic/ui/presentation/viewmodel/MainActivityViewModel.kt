@@ -7,6 +7,7 @@ import dev.angryl1on.vetclinic.common.presentation.Reducer
 import dev.angryl1on.vetclinic.common.presentation.UiState
 import dev.angryl1on.vetclinic.common.presentation.ViewModel
 import dev.angryl1on.vetclinic.data.auth.AuthenticationDataStore
+import dev.angryl1on.vetclinic.database.VetClinicDatabase
 import dev.angryl1on.vetclinic.domain.navigation.Route
 import dev.angryl1on.vetclinic.domain.usecase.authservice.GetUserInfoUseCase
 import dev.angryl1on.vetclinic.model.auth.UserInfo
@@ -20,6 +21,7 @@ import kotlinx.coroutines.launch
 class MainActivityViewModel(
     private val getCurrentUserUseCase: GetUserInfoUseCase,
     private val authDataStore: AuthenticationDataStore,
+    private val database: VetClinicDatabase
 ) : ViewModel<MainActivityState, MainActivityIntent>() {
 
     /**
@@ -103,7 +105,7 @@ data class UiScaffoldState(
         if (currentRoute == null) return this
 
         val newState = copy(
-            appBarState   = calculateAppBar(currentRoute),
+            appBarState = calculateAppBar(currentRoute),
             showBottomBar = !currentRoute.isAuthRoute()
         )
 
@@ -228,6 +230,7 @@ private fun String.isAuthRoute(): Boolean = routeSuffix() in AUTH_ROUTE_SUFFIXES
 private val AUTH_ROUTE_SUFFIXES = setOf(
     "SplashScreen",
     "LoginScreen",
-    "RegistrationFlowScreen",
+    "RegistrationScreen",
+    "${Route.VerifyScreen}?email={email}&masked={masked}",
     "StartScreen"
 )

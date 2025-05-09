@@ -14,4 +14,7 @@
     <string name="pick_date">Выберите дату</string>
     <string name="cancel">Отменить</string>
     <string name="confirm">Подтвердить</string>
+    <string name="phone_number">Номер телефона</string>
+    <string name="phone_number_enter">Введите свой телефон</string>
+    <string name="phone_enter_sup_text">Ввод начинайте с 7 или 8. Мы сами отредактируем строку)</string>
 </resources>

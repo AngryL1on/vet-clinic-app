@@ -3,18 +3,21 @@ package dev.angryl1on.vetclinic.network.di
 import dev.angryl1on.vetclinic.common.di.VcDispatchers
 import dev.angryl1on.vetclinic.domain.usecase.authservice.GetUserInfoUseCase
 import dev.angryl1on.vetclinic.domain.usecase.authservice.RefreshTokenUseCase
+import dev.angryl1on.vetclinic.domain.usecase.authservice.RegisterUseCase
 import dev.angryl1on.vetclinic.domain.usecase.authservice.SignInUseCase
+import dev.angryl1on.vetclinic.domain.usecase.authservice.VerifyUseCase
 import dev.angryl1on.vetclinic.domain.usecase.petservice.CreatePetUseCase
 import dev.angryl1on.vetclinic.domain.usecase.petservice.DeletePetUseCase
 import dev.angryl1on.vetclinic.domain.usecase.petservice.EditPetUseCase
 import dev.angryl1on.vetclinic.domain.usecase.petservice.GetAllPetsUseCase
-import dev.angryl1on.vetclinic.domain.usecase.petservice.ObservePetsUseCase
 import dev.angryl1on.vetclinic.domain.usecase.petservice.UploadPhotoUseCase
 import dev.angryl1on.vetclinic.network.authservice.AuthService
 import dev.angryl1on.vetclinic.network.authservice.KtorAuthService
 import dev.angryl1on.vetclinic.network.authservice.usecase.GetUserInfoUseCaseImpl
 import dev.angryl1on.vetclinic.network.authservice.usecase.RefreshTokenUseCaseImpl
+import dev.angryl1on.vetclinic.network.authservice.usecase.RegisterUseCaseImpl
 import dev.angryl1on.vetclinic.network.authservice.usecase.SignInUseCaseImpl
+import dev.angryl1on.vetclinic.network.authservice.usecase.VerifyUseCaseImpl
 import dev.angryl1on.vetclinic.network.petservice.KtorPetService
 import dev.angryl1on.vetclinic.network.petservice.PetService
 import dev.angryl1on.vetclinic.network.petservice.usecase.CreatePetUseCaseImpl
@@ -98,6 +101,14 @@ val provideNetworkModule = module {
 
     single<SignInUseCase> {
         SignInUseCaseImpl(authService = get())
+    }
+
+    single<RegisterUseCase> {
+        RegisterUseCaseImpl(authService = get())
+    }
+
+    single<VerifyUseCase> {
+        VerifyUseCaseImpl(authService = get())
     }
 
     single<RefreshTokenUseCase> {

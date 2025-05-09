@@ -11,7 +11,10 @@ sealed interface Route {
     data object LoginScreen : Route
 
     @Serializable
-    data object RegistrationFlowScreen : Route
+    data object RegistrationScreen : Route
+
+    @Serializable
+    data object VerifyScreen : Route
 
     @Serializable
     data object SplashScreen : Route

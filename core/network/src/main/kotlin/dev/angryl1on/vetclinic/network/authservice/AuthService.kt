@@ -5,7 +5,9 @@ import dev.angryl1on.vetclinic.model.auth.AuthData
 import dev.angryl1on.vetclinic.model.auth.AuthDataStore
 import dev.angryl1on.vetclinic.model.auth.AuthNetworkResponse
 import dev.angryl1on.vetclinic.model.auth.RefreshToken
+import dev.angryl1on.vetclinic.model.auth.RegisterData
 import dev.angryl1on.vetclinic.model.auth.UserInfo
+import dev.angryl1on.vetclinic.model.auth.VerifyRegisterData
 import dev.angryl1on.vetclinic.model.auth.asUserAuthDataStore
 import dev.angryl1on.vetclinic.network.extensions.request
 import io.ktor.client.HttpClient
@@ -19,7 +21,6 @@ import io.ktor.http.contentType
 import io.ktor.http.path
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 
 /**
  * Интерфейс для авторизации пользователя
@@ -46,6 +47,20 @@ interface AuthService {
      * @property [token] токен обновления пользователя. Использует [RefreshToken] data class
      */
     suspend fun getInfo(token: String): Result<UserInfo>
+
+    /**
+     * Метод для регистрации пользователя
+     *
+     * @property [model] данные для регистрации пользователя. Использует [RegisterData] data class
+     */
+    suspend fun register(model: RegisterData): Result<String>
+
+    /**
+     * Метод для подтверждения регистрации пользователя
+     *
+     * @property [model] данные для подтверждения регистрации пользователя. Использует [VerifyRegisterData] data class
+     */
+    suspend fun verify(model: VerifyRegisterData): Result<String>
 }
 
 class KtorAuthService(
@@ -113,7 +128,36 @@ class KtorAuthService(
                     contentType(ContentType.Application.Json)
                 }
                 bearerAuth(token = token)
-                Timber.d(token)
+            }
+        }
+    }
+
+    override suspend fun register(model: RegisterData) = withContext(dispatcher) {
+        client.request<String> {
+            post {
+                url {
+                    protocol = URLProtocol.HTTP
+                    host = apiHost
+                    port = 8080
+                    path("api", "auth", "register")
+                    contentType(ContentType.Application.Json)
+                    setBody(model)
+                }
+            }
+        }
+    }
+
+    override suspend fun verify(model: VerifyRegisterData) = withContext(dispatcher) {
+        client.request<String> {
+            post {
+                url {
+                    protocol = URLProtocol.HTTP
+                    host = apiHost
+                    port = 8080
+                    path("api", "auth", "verify")
+                    contentType(ContentType.Application.Json)
+                    setBody(model)
+                }
             }
         }
     }
