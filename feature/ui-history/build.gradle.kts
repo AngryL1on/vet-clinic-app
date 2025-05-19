@@ -18,6 +18,12 @@ dependencies {
     implementation(libs.kotlinx.datetime)
 
     /**
+     * Navigation dependencies
+     */
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.navigation.runtime.ktx)
+
+    /**
      *  Module dependencies
      */
     implementation(project(":core:ui"))

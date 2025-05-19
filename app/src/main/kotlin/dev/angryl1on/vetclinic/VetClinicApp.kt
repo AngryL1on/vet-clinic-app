@@ -1,6 +1,7 @@
 package dev.angryl1on.vetclinic
 
 import android.app.Application
+import dev.angryl1on.history.di.provideHistoryModule
 import dev.angryl1on.profile.di.provideProfileModule
 import dev.angryl1on.vetclinic.auth.di.provideAuthModule
 import dev.angryl1on.vetclinic.common.di.provideCoroutineScopesModule
@@ -45,6 +46,9 @@ class VetClinicApp : Application() {
 
             // feature:ui-auth modules
             modules(provideAuthModule)
+
+            // feature:ui-history modules
+            modules(provideHistoryModule)
 
             // feature:ui-profile modules
             modules(provideProfileModule)

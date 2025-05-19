@@ -26,6 +26,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import dev.angryl1on.appointment.presentation.screens.AppointmentScreen
 import dev.angryl1on.history.presentation.screens.HistoryScreen
+import dev.angryl1on.history.presentation.screens.VisitDetailsScreen
 import dev.angryl1on.main.presentation.screens.MainScreen
 import dev.angryl1on.profile.presentation.screens.AddPetScreen
 import dev.angryl1on.profile.presentation.screens.EditPetScreen
@@ -33,12 +34,14 @@ import dev.angryl1on.profile.presentation.screens.PetisiansManagementScreen
 import dev.angryl1on.profile.presentation.screens.ProfileManagmentScreen
 import dev.angryl1on.profile.presentation.screens.ProfileScreen
 import dev.angryl1on.vetclinic.auth.presentation.screens.LoginScreen
-import dev.angryl1on.vetclinic.common.navigation.*
 import dev.angryl1on.vetclinic.auth.presentation.screens.RegistrationScreen
 import dev.angryl1on.vetclinic.auth.presentation.screens.SplashScreen
 import dev.angryl1on.vetclinic.auth.presentation.screens.StartScreen
 import dev.angryl1on.vetclinic.auth.presentation.screens.VerifyScreen
+import dev.angryl1on.vetclinic.common.navigation.prettyName
+import dev.angryl1on.vetclinic.common.navigation.routeName
 import dev.angryl1on.vetclinic.domain.navigation.Route
+import dev.angryl1on.vetclinic.model.medicalrecord.MedicalRecord
 import dev.angryl1on.vetclinic.model.pet.PetResponse
 import dev.angryl1on.vetclinic.ui.components.appbars.ToolBar
 import dev.angryl1on.vetclinic.ui.components.appbars.TopBarError
@@ -158,7 +161,18 @@ class MainActivity : ComponentActivity() {
                                     )
                                 }
                                 composable<Route.AppointmentScreen> { AppointmentScreen() }
-                                composable<Route.HistoryScreen> { HistoryScreen() }
+                                composable<Route.HistoryScreen> { HistoryScreen(navController) }
+                                composable(Route.VisitDetailsScreen.routeName) { backStackEntry ->
+                                    val record = backStackEntry
+                                        .savedStateHandle
+                                        .get<MedicalRecord>(Route.VisitDetailsScreen.ARG_RECORD)
+                                        ?: error("MedicalRecord not found in SavedStateHandle")
+
+                                    VisitDetailsScreen(
+                                        record = record
+                                    )
+                                }
+
                                 composable<Route.ProfileScreen> {
                                     ProfileScreen(
                                         onPersonalDataClick = { navController.navigate(Route.ProfileManagmentScreen) },

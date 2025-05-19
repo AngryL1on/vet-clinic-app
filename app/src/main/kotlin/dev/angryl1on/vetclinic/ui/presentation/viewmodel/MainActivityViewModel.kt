@@ -155,6 +155,17 @@ data class UiScaffoldState(
                 }
             )
 
+            "visit_details_screen" -> AppBarState.Toolbar(
+                screenName = "Details of the visit",
+                isMainScreen = false,
+                canNavigateBack = true,
+                iconLeft = R.drawable.ic_arrow_back,
+                iconRight = null,
+                onRightIconClick = { navController ->
+                    { navController.navigate(Route.HistoryScreen) }
+                }
+            )
+
             "EditPetScreen" -> AppBarState.Toolbar(
                 screenName = "Edit pet",
                 isMainScreen = false,

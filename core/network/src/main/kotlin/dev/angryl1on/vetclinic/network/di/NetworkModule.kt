@@ -6,6 +6,7 @@ import dev.angryl1on.vetclinic.domain.usecase.authservice.RefreshTokenUseCase
 import dev.angryl1on.vetclinic.domain.usecase.authservice.RegisterUseCase
 import dev.angryl1on.vetclinic.domain.usecase.authservice.SignInUseCase
 import dev.angryl1on.vetclinic.domain.usecase.authservice.VerifyUseCase
+import dev.angryl1on.vetclinic.domain.usecase.medicalrecordservice.GetMedicalRecordByPetIdUseCase
 import dev.angryl1on.vetclinic.domain.usecase.petservice.CreatePetUseCase
 import dev.angryl1on.vetclinic.domain.usecase.petservice.DeletePetUseCase
 import dev.angryl1on.vetclinic.domain.usecase.petservice.EditPetUseCase
@@ -18,6 +19,9 @@ import dev.angryl1on.vetclinic.network.authservice.usecase.RefreshTokenUseCaseIm
 import dev.angryl1on.vetclinic.network.authservice.usecase.RegisterUseCaseImpl
 import dev.angryl1on.vetclinic.network.authservice.usecase.SignInUseCaseImpl
 import dev.angryl1on.vetclinic.network.authservice.usecase.VerifyUseCaseImpl
+import dev.angryl1on.vetclinic.network.medicalrecordservice.KtorMedicalRecordService
+import dev.angryl1on.vetclinic.network.medicalrecordservice.MedicalRecordService
+import dev.angryl1on.vetclinic.network.medicalrecordservice.usecase.GetMedicalRecordByPetIdUseCaseImpl
 import dev.angryl1on.vetclinic.network.petservice.KtorPetService
 import dev.angryl1on.vetclinic.network.petservice.PetService
 import dev.angryl1on.vetclinic.network.petservice.usecase.CreatePetUseCaseImpl
@@ -99,6 +103,14 @@ val provideNetworkModule = module {
         )
     }
 
+    single<MedicalRecordService> {
+        KtorMedicalRecordService(
+            client = get(),
+            apiHost = get(named("API")),
+            dispatcher = get(named(VcDispatchers.IO.name))
+        )
+    }
+
     single<SignInUseCase> {
         SignInUseCaseImpl(authService = get())
     }
@@ -155,6 +167,13 @@ val provideNetworkModule = module {
         DeletePetUseCaseImpl(
             petService = get(),
             petDao = get(),
+            tokenSupport = get()
+        )
+    }
+
+    single<GetMedicalRecordByPetIdUseCase> {
+        GetMedicalRecordByPetIdUseCaseImpl(
+            medicalRecordService = get(),
             tokenSupport = get()
         )
     }

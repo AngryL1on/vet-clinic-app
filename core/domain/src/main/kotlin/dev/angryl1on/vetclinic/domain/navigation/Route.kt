@@ -29,6 +29,12 @@ sealed interface Route {
     data object HistoryScreen : Route
 
     @Serializable
+    data object VisitDetailsScreen : Route {
+        const val routeName = "visit_details_screen"
+        const val ARG_RECORD = "record"
+    }
+
+    @Serializable
     data object ProfileScreen : Route
 
     @Serializable

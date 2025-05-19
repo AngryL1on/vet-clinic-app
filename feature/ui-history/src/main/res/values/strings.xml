@@ -1,3 +1,13 @@
 <resources>
 
+    <string name="branch">Филиал «%1$s»</string>
+    <string name="date">Дата</string>
+    <string name="time">Время</string>
+    <string name="service">Услуга</string>
+    <string name="diagnosis">Диагноз</string>
+    <string name="treatment">Лечение</string>
+    <string name="note">Примечания</string>
+    <string name="you_have_no_visits">У вас нет посещений</string>
+    <string name="detailed">Подробнее</string>
+    <string name="photo_doctor">Photo doctor</string>
 </resources>

@@ -8,7 +8,7 @@ android {
     namespace = "dev.angryl1on.vetclinic.network"
 
     defaultConfig {
-        buildConfigField("String", "WEB_HOST", "\"192.168.3.68\"")
+        buildConfigField("String", "WEB_HOST", "\"192.168.0.110\"")
     }
 
     buildFeatures {
