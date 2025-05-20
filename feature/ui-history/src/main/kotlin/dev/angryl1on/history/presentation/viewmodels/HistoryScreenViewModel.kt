@@ -32,7 +32,7 @@ class HistoryScreenViewModel(
     }
 
     /** Метод для загрузки списка питомцев */
-    private fun refresh() = viewModelScope.launch {
+    fun refresh() = viewModelScope.launch {
         reducer.sendIntent(HistoryScreenIntent.Load)
         getAllPetsUseCase()
             .onSuccess { list ->
