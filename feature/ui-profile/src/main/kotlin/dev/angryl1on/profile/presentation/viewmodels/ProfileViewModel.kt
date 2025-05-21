@@ -18,7 +18,6 @@ import timber.log.Timber
 
 class ProfileViewModel(
     private val getUserInfoUseCase: GetUserInfoUseCase
-
 ) : ViewModel<ProfileScreenState, ProfileScreenIntent>() {
     // Создайте копию Reducer для управления экраном
     private val reducer = ProfileScreenReducer(ProfileScreenState.Init)

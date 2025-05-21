@@ -1,12 +1,15 @@
 package dev.angryl1on.vetclinic.network.appointmentsservice
 
 import dev.angryl1on.vetclinic.model.appointment.AppointmentRequest
+import dev.angryl1on.vetclinic.model.appointment.AppointmentResponse
+import dev.angryl1on.vetclinic.network.extensions.request
 import io.ktor.client.HttpClient
 import io.ktor.client.call.NoTransformationFoundException
 import io.ktor.client.call.body
 import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
 import io.ktor.client.request.post
+import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
@@ -27,6 +30,10 @@ interface AppointmentsService {
         date: String,
         type: String
     ): Result<List<String>>
+
+    suspend fun appointmentByScheduled(token: String): Result<List<AppointmentResponse>>
+
+    suspend fun cancelAppointment(token: String, appointmentId: Long): Result<Unit>
 }
 
 class KtorAppointmentsService(
@@ -54,7 +61,6 @@ class KtorAppointmentsService(
             response.body()
         } catch (e: NoTransformationFoundException) {
             if (response.status == HttpStatusCode.Created) {
-                Timber.d("Ответ без тела, но с 201 — возвращаем true")
                 true
             } else {
                 Timber.e(e, "Ошибка при десериализации ответа")
@@ -87,4 +93,37 @@ class KtorAppointmentsService(
             Result.failure(e)
         }
     }
+
+    override suspend fun appointmentByScheduled(token: String) = withContext(dispatcher) {
+        client.request<List<AppointmentResponse>> {
+            get {
+                url {
+                    protocol = URLProtocol.HTTP
+                    host = apiHost
+                    port = 8080
+                    path("api", "appointments", "owner", "SCHEDULED")
+                }
+                bearerAuth(token)
+            }
+        }
+    }
+
+    override suspend fun cancelAppointment(token: String, appointmentId: Long): Result<Unit> =
+        withContext(dispatcher) {
+            runCatching {
+                val response: HttpResponse = client.put {
+                    url {
+                        protocol = URLProtocol.HTTP
+                        host = apiHost
+                        port = 8080
+                        path("api", "appointments", "cancel", "$appointmentId")
+                    }
+                    bearerAuth(token)
+                }
+                Result.success(Unit)
+            }.getOrElse {
+                Result.failure(it)
+            }
+        }
+
 }

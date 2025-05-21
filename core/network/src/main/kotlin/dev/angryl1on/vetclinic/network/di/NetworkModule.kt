@@ -1,7 +1,9 @@
 package dev.angryl1on.vetclinic.network.di
 
 import dev.angryl1on.vetclinic.common.di.VcDispatchers
+import dev.angryl1on.vetclinic.domain.usecase.appointmentsservice.CancelAppointmentUseCase
 import dev.angryl1on.vetclinic.domain.usecase.appointmentsservice.CreateAppointmentUseCase
+import dev.angryl1on.vetclinic.domain.usecase.appointmentsservice.GetAppointmentByScheduled
 import dev.angryl1on.vetclinic.domain.usecase.appointmentsservice.GetAvailableSlotsUseCase
 import dev.angryl1on.vetclinic.domain.usecase.authservice.GetUserInfoUseCase
 import dev.angryl1on.vetclinic.domain.usecase.authservice.RefreshTokenUseCase
@@ -19,7 +21,9 @@ import dev.angryl1on.vetclinic.domain.usecase.schedulesservice.GetScheduleByDoct
 import dev.angryl1on.vetclinic.domain.usecase.userservice.GetDoctorsByBranchIdUseCase
 import dev.angryl1on.vetclinic.network.appointmentsservice.AppointmentsService
 import dev.angryl1on.vetclinic.network.appointmentsservice.KtorAppointmentsService
+import dev.angryl1on.vetclinic.network.appointmentsservice.usecase.CancelAppointmentUseCaseImpl
 import dev.angryl1on.vetclinic.network.appointmentsservice.usecase.CreateAppointmentUseCaseImpl
+import dev.angryl1on.vetclinic.network.appointmentsservice.usecase.GetAppointmentByScheduledImpl
 import dev.angryl1on.vetclinic.network.appointmentsservice.usecase.GetAvailableSlotsUseCaseImpl
 import dev.angryl1on.vetclinic.network.authservice.AuthService
 import dev.angryl1on.vetclinic.network.authservice.KtorAuthService
@@ -258,6 +262,20 @@ val provideNetworkModule = module {
 
     single<CreateAppointmentUseCase> {
         CreateAppointmentUseCaseImpl(
+            appointmentsService = get(),
+            tokenSupport = get()
+        )
+    }
+
+    single<GetAppointmentByScheduled> {
+        GetAppointmentByScheduledImpl(
+            appointmentsService = get(),
+            tokenSupport = get()
+        )
+    }
+
+    single<CancelAppointmentUseCase> {
+        CancelAppointmentUseCaseImpl(
             appointmentsService = get(),
             tokenSupport = get()
         )
