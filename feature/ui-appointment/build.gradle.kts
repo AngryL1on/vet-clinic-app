@@ -16,6 +16,19 @@ dependencies {
      */
     implementation(libs.androidx.core.ktx)
     implementation(libs.kotlinx.datetime)
+    implementation(libs.kotlinx.coroutines.play.services)
+
+    /**
+     * Maps dependencies
+     */
+    implementation(libs.play.services.maps)
+    implementation(libs.play.services.location)
+
+    /**
+     * Navigation dependencies
+     */
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.navigation.runtime.ktx)
 
     /**
      *  Module dependencies

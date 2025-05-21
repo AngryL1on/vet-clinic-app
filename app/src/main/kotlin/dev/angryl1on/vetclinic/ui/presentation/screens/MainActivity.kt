@@ -156,12 +156,18 @@ class MainActivity : ComponentActivity() {
                                 composable<Route.MainScreen> {
                                     MainScreen(
                                         onAppointmentClick = {
-                                            navController.navigate(Route.AppointmentScreen)
+                                            navController.navigate(Route.AppointmentScreen) {
+                                                popUpTo(Route.MainScreen) { inclusive = true }
+                                            }
                                         }
                                     )
                                 }
-                                composable<Route.AppointmentScreen> { AppointmentScreen() }
-                                composable<Route.HistoryScreen> { HistoryScreen(navController) }
+                                composable<Route.AppointmentScreen> {
+                                    AppointmentScreen(
+                                        navController = navController
+                                    )
+                                }
+                                composable<Route.HistoryScreen> { HistoryScreen(navController = navController) }
                                 composable(Route.VisitDetailsScreen.routeName) { backStackEntry ->
                                     val record = backStackEntry
                                         .savedStateHandle
@@ -175,8 +181,12 @@ class MainActivity : ComponentActivity() {
 
                                 composable<Route.ProfileScreen> {
                                     ProfileScreen(
-                                        onPersonalDataClick = { navController.navigate(Route.ProfileManagmentScreen) },
-                                        onPetisiansManagementClick = { navController.navigate(Route.PetisiansManagementScreen) },
+                                        onPersonalDataClick = {
+                                            navController.navigate(Route.ProfileManagmentScreen)
+                                        },
+                                        onPetisiansManagementClick = {
+                                            navController.navigate(Route.PetisiansManagementScreen)
+                                        },
                                         onLogoutClick = {
                                             viewModel.logout(
                                                 onComplete = {

@@ -6,6 +6,8 @@ org-jetbrains-kotlinx-datetime = "0.6.1"
 org-jetbrains-kotlinx-serialization-json = "1.7.3"
 org-gradle-android-cache-fix = "3.0.1"
 com-google-ksp = "2.1.10-1.0.31"
+com-google-gms-maps = "18.2.0"
+com-google-gms-location = "21.0.1"
 io-insert-koin = "4.0.0"
 io-mockk = "1.13.5"
 androidx-test = "1.6.1"
@@ -43,9 +45,13 @@ gradle-plugin-ksp = { group = "com.google.devtools.ksp", name = "com.google.devt
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "org-jetbrains-kotlinx-serialization-json" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "org-jetbrains-kotlinx-coroutines" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "org-jetbrains-kotlinx-coroutines" }
+kotlinx-coroutines-play-services = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-play-services", version.ref = "org-jetbrains-kotlinx-coroutines" }
 kotlinx-coroutines-jdk8 = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-jdk8", version.ref = "org-jetbrains-kotlinx-coroutines" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "org-jetbrains-kotlinx-coroutines" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "org-jetbrains-kotlinx-datetime" }
+
+play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "com-google-gms-maps" }
+play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "com-google-gms-location" }
 
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidx-compose-bom" }
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }

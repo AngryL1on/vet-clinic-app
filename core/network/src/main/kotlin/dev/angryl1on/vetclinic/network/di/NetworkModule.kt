@@ -1,17 +1,26 @@
 package dev.angryl1on.vetclinic.network.di
 
 import dev.angryl1on.vetclinic.common.di.VcDispatchers
+import dev.angryl1on.vetclinic.domain.usecase.appointmentsservice.CreateAppointmentUseCase
+import dev.angryl1on.vetclinic.domain.usecase.appointmentsservice.GetAvailableSlotsUseCase
 import dev.angryl1on.vetclinic.domain.usecase.authservice.GetUserInfoUseCase
 import dev.angryl1on.vetclinic.domain.usecase.authservice.RefreshTokenUseCase
 import dev.angryl1on.vetclinic.domain.usecase.authservice.RegisterUseCase
 import dev.angryl1on.vetclinic.domain.usecase.authservice.SignInUseCase
 import dev.angryl1on.vetclinic.domain.usecase.authservice.VerifyUseCase
+import dev.angryl1on.vetclinic.domain.usecase.branchesservice.GetBranchByServiceNameUseCase
 import dev.angryl1on.vetclinic.domain.usecase.medicalrecordservice.GetMedicalRecordByPetIdUseCase
 import dev.angryl1on.vetclinic.domain.usecase.petservice.CreatePetUseCase
 import dev.angryl1on.vetclinic.domain.usecase.petservice.DeletePetUseCase
 import dev.angryl1on.vetclinic.domain.usecase.petservice.EditPetUseCase
 import dev.angryl1on.vetclinic.domain.usecase.petservice.GetAllPetsUseCase
 import dev.angryl1on.vetclinic.domain.usecase.petservice.UploadPhotoUseCase
+import dev.angryl1on.vetclinic.domain.usecase.schedulesservice.GetScheduleByDoctorIdUseCase
+import dev.angryl1on.vetclinic.domain.usecase.userservice.GetDoctorsByBranchIdUseCase
+import dev.angryl1on.vetclinic.network.appointmentsservice.AppointmentsService
+import dev.angryl1on.vetclinic.network.appointmentsservice.KtorAppointmentsService
+import dev.angryl1on.vetclinic.network.appointmentsservice.usecase.CreateAppointmentUseCaseImpl
+import dev.angryl1on.vetclinic.network.appointmentsservice.usecase.GetAvailableSlotsUseCaseImpl
 import dev.angryl1on.vetclinic.network.authservice.AuthService
 import dev.angryl1on.vetclinic.network.authservice.KtorAuthService
 import dev.angryl1on.vetclinic.network.authservice.usecase.GetUserInfoUseCaseImpl
@@ -19,6 +28,9 @@ import dev.angryl1on.vetclinic.network.authservice.usecase.RefreshTokenUseCaseIm
 import dev.angryl1on.vetclinic.network.authservice.usecase.RegisterUseCaseImpl
 import dev.angryl1on.vetclinic.network.authservice.usecase.SignInUseCaseImpl
 import dev.angryl1on.vetclinic.network.authservice.usecase.VerifyUseCaseImpl
+import dev.angryl1on.vetclinic.network.branchesservice.BranchesService
+import dev.angryl1on.vetclinic.network.branchesservice.KtorBranchesService
+import dev.angryl1on.vetclinic.network.branchesservice.usecase.GetBranchByServiceNameUseCaseImpl
 import dev.angryl1on.vetclinic.network.medicalrecordservice.KtorMedicalRecordService
 import dev.angryl1on.vetclinic.network.medicalrecordservice.MedicalRecordService
 import dev.angryl1on.vetclinic.network.medicalrecordservice.usecase.GetMedicalRecordByPetIdUseCaseImpl
@@ -29,8 +41,14 @@ import dev.angryl1on.vetclinic.network.petservice.usecase.DeletePetUseCaseImpl
 import dev.angryl1on.vetclinic.network.petservice.usecase.EditPetUseCaseImpl
 import dev.angryl1on.vetclinic.network.petservice.usecase.GetAllPetsUseCaseImpl
 import dev.angryl1on.vetclinic.network.petservice.usecase.UploadPhotoUseCaseImpl
+import dev.angryl1on.vetclinic.network.schedulesservice.KtorSchedulesService
+import dev.angryl1on.vetclinic.network.schedulesservice.SchedulesService
+import dev.angryl1on.vetclinic.network.schedulesservice.usecase.GetScheduleByDoctorIdUseCaseImpl
 import dev.angryl1on.vetclinic.network.tokenservice.TokenSupport
 import dev.angryl1on.vetclinic.network.tokenservice.TokenSupportImpl
+import dev.angryl1on.vetclinic.network.userservice.KtorUserService
+import dev.angryl1on.vetclinic.network.userservice.UserService
+import dev.angryl1on.vetclinic.network.userservice.usecase.GetDoctorsByBranchIdUseCaseImpl
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.okhttp.OkHttp
@@ -103,8 +121,40 @@ val provideNetworkModule = module {
         )
     }
 
+    single<BranchesService> {
+        KtorBranchesService(
+            client = get(),
+            apiHost = get(named("API")),
+            dispatcher = get(named(VcDispatchers.IO.name))
+        )
+    }
+
     single<MedicalRecordService> {
         KtorMedicalRecordService(
+            client = get(),
+            apiHost = get(named("API")),
+            dispatcher = get(named(VcDispatchers.IO.name))
+        )
+    }
+
+    single<UserService> {
+        KtorUserService(
+            client = get(),
+            apiHost = get(named("API")),
+            dispatcher = get(named(VcDispatchers.IO.name))
+        )
+    }
+
+    single<SchedulesService> {
+        KtorSchedulesService(
+            client = get(),
+            apiHost = get(named("API")),
+            dispatcher = get(named(VcDispatchers.IO.name))
+        )
+    }
+
+    single<AppointmentsService> {
+        KtorAppointmentsService(
             client = get(),
             apiHost = get(named("API")),
             dispatcher = get(named(VcDispatchers.IO.name))
@@ -174,6 +224,41 @@ val provideNetworkModule = module {
     single<GetMedicalRecordByPetIdUseCase> {
         GetMedicalRecordByPetIdUseCaseImpl(
             medicalRecordService = get(),
+            tokenSupport = get()
+        )
+    }
+
+    single<GetBranchByServiceNameUseCase> {
+        GetBranchByServiceNameUseCaseImpl(
+            branchesService = get(),
+            tokenSupport = get()
+        )
+    }
+
+    single<GetDoctorsByBranchIdUseCase> {
+        GetDoctorsByBranchIdUseCaseImpl(
+            userService = get(),
+            tokenSupport = get()
+        )
+    }
+
+    single<GetScheduleByDoctorIdUseCase> {
+        GetScheduleByDoctorIdUseCaseImpl(
+            schedulesService = get(),
+            tokenSupport = get()
+        )
+    }
+
+    single<GetAvailableSlotsUseCase> {
+        GetAvailableSlotsUseCaseImpl(
+            appointmentsService = get(),
+            tokenSupport = get()
+        )
+    }
+
+    single<CreateAppointmentUseCase> {
+        CreateAppointmentUseCaseImpl(
+            appointmentsService = get(),
             tokenSupport = get()
         )
     }

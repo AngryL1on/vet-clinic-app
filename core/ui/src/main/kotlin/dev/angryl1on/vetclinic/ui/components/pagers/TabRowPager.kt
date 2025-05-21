@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Surface
@@ -59,6 +60,7 @@ fun TabRowPager(
         TabRow(
             containerColor = Color.Unspecified,
             selectedTabIndex = pagerState.currentPage,
+            divider = {  },
             indicator = { tabPosition ->
                 val textSize = textSizes.getOrNull(pagerState.currentPage) ?: Size(50f, 0f)
                 val width = with(LocalDensity.current) { textSize.width.toDp() }
@@ -108,7 +110,7 @@ fun TabRowPager(
         ) { page ->
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .wrapContentSize()
                     .padding(top = spaceBetweenTabAndPager)
             ) { tabs[page].second() }
         }
